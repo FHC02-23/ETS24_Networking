@@ -1,8 +1,6 @@
 package org.campus02.urldemo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -12,20 +10,25 @@ public class MyFirstUrlDemo {
 
         // implizit file: /
         // protokoll: https => port: 443
-        String urlString = "https://www.campus02.at";
+        String urlString = "https://www.campus02.at/startseite/oeffnungszeiten/";
 
         try {
             URL myUrl = new URL(urlString);
 
             // wir wollen nun lesen
             try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(myUrl.openStream())
-            )) {
+                    new InputStreamReader(myUrl.openStream()));
+                 BufferedWriter bw = new BufferedWriter(
+                         new FileWriter("data\\campus02.html"))) {
 
                 String html;
                 while ((html = br.readLine()) != null) {
-                    System.out.println(html);
+                    //System.out.println(html);
+                    bw.write(html);
+                    bw.newLine(); // \r\n
                 }
+
+                bw.flush(); // !!!!!! schreiben
 
             } catch (IOException e) {
                 e.printStackTrace();
